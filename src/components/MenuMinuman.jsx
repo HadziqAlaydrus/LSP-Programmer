@@ -1,40 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardMinuman from "./CardMinuman";
 
 const MenuMinuman = () => {
-  const drinkItems = [
-    {
-      id: 1,
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      title: "Shoes!",
-      description: "If a dog chews shoes whose shoes does he choose?",
-      price: 1000,
-    },
-    {
-      id: 2,
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      title: "Burger!",
-      description: "A tasty burger with all the fixings.",
-    },
-    {
-      id: 3,
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      title: "Pasta!",
-      description: "Delicious pasta with homemade sauce.",
-    },
-    {
-      id: 4,
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      title: "Salad!",
-      description: "A fresh and healthy salad.",
-    },
-    {
-      id: 5,
-      image: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-      title: "Pizza!",
-      description: "Delicious pizza with your favorite toppings.",
-    },
-  ];
+  const [drinkItems, setDrinkItems] = useState([]);
+
+  // Fetch drink data from the backend
+  useEffect(() => {
+    const fetchDrinkItems = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/menu/minuman");
+        const data = await response.json();
+        setDrinkItems(data);
+      } catch (error) {
+        console.error("Error fetching drink items:", error);
+      }
+    };
+    fetchDrinkItems();
+  }, []);
 
   return (
     <section className="mt-10 p-2">
@@ -47,9 +29,9 @@ const MenuMinuman = () => {
             <CardMinuman
               key={item.id}
               image={item.image}
-              title={item.title}
-              description={item.description}
-              price={item.price}
+              title={item.nama_minuman}
+              description={`Stock: ${item.stock_minuman}`}
+              price={item.harga_minuman}
             />
           ))}
         </div>
